@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="author" content="Chen Liu">
+	<!-- <link rel="shortcut icon" href="../../assets/ico/favicon.ico"> -->
+
+	<title>Magic App</title>
+	
+	<!-- CSS -->
+	<link href="css/bootstrap.min.css" rel="stylesheet">
+	<link href="css/style.css" rel="stylesheet">
+</head>
+
+<body>
+	<ul class="nav nav-pills">
+		<li role="presentation" class="active"><a href="#">New Game</a></li>
+		<li role="presentation"><a href="#">Configure</a></li>
+	</ul>
+	<div class="switch">
+		<input type="radio" class="switch-input" name="view" value="scoreboard" id="scoreboard" checked>
+		<label for="scoreboard" class="switch-label switch-label-off">Scoreboard</label>
+		<input type="radio" class="switch-input" name="view" value="history" id="history">
+		<label for="history" class="switch-label switch-label-on">History</label>
+		<span class="switch-selection"></span>
+	</div>
+	<div class="table-responsive">
+		<table class="table">
+			<thead>
+				<tr>
+					<th>Icons</th>
+					<th>Player1</th>
+					<th>Player2</th>
+					<th>Player3</th>
+					<th>Player4</th>
+					<th>Player5</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td><span class="glyphicon glyphicon-king" aria-hidden="true"></span></td>
+					<td>0</td>
+					<td>0</td>
+					<td>0</td>
+					<td>0</td>
+					<td>0</td>
+				</tr>
+				<tr>
+					<td><span class="glyphicon glyphicon-heart" aria-hidden="true"></span></td>
+					<td>40</td>
+					<td>40</td>
+					<td>40</td>
+					<td>40</td>
+					<td>40</td>
+				</tr>
+				<tr>
+					<td><span class="glyphicon glyphicon-ice-lolly-tasted" aria-hidden="true"></span></td>
+					<td>0</td>
+					<td>0</td>
+					<td>0</td>
+					<td>0</td>
+					<td>0</td>
+				</tr>
+				<tr>
+					<td><span class="glyphicon glyphicon-flash" aria-hidden="true"></span></td>
+					<td>Ø</td>
+					<td>Ø</td>
+					<td>Ø</td>
+					<td>Ø</td>
+					<td>Ø</td>
+				</tr>
+			</tbody>
+		</table>
+		<div class="col-xs-12">
+			<button type="button" class="btn btn-danger col-xs-2">-10</button>
+			<button type="button" class="btn btn-danger col-xs-2">-5</button>
+			<button type="button" class="btn btn-danger col-xs-2">-1</button>
+			<button type="button" class="btn btn-success col-xs-2">+1</button>
+			<button type="button" class="btn btn-success col-xs-2">+5</button>
+			<button type="button" class="btn btn-success col-xs-2">+10</button>
+		</div>
+	</div>
+</body>
+</html>
