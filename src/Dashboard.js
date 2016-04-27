@@ -3,6 +3,7 @@ import {Link} from 'react-router';
 import { firebaseRoot } from './utils/firebase-utils';
 import ReactFireMixin from 'reactfire';
 import './dashboard.scss';
+import _ from 'lodash';
 
 const App = React.createClass({
     mixins: [ReactFireMixin],
@@ -12,7 +13,8 @@ const App = React.createClass({
             chosenCategory: '',
             showPoints: false,
             chosenCommanderAttacker:'',
-            disable: false
+            disable: false,
+            theAttackerArray: []
         }
     },
     componentWillMount: function () {
@@ -21,6 +23,7 @@ const App = React.createClass({
     },
     render() {
         console.log(this.state.chosenPlayer, this.state.chosenCategory);
+        // console.log(this.state.players);
         return (
             <div>
                 <div className="row">
@@ -103,20 +106,33 @@ const App = React.createClass({
                     <div className="modal-dialog modal-sm">
                         <div className="modal-content">
                                 <div className="modal-header">
-                                    <h3>{this.state.chosenPlayer}</h3>
-                                    <h4 className="modal-title">Choose a commander attacker and attack points</h4>
+                                    <h4 className="modal-title">Attack receiver: {this.state.chosenPlayer}</h4>
                                 </div>
                                 <div className="modal-body">
 
                                         <div className="row">
                                             <div className="col-xs-12 players">
-                                                {
-                                                this.state.players.map((player, i) => {
-                                                    return (
-                                                        <button key={i} className="btn btn-default col-xs-2" onClick={this.handleChosenCommanderAttacker.bind(this, player['.key'])}>{player.name}</button>
-                                                    );
-                                                })
-                                                }
+                                                <table className="table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th><span className="glyphicon glyphicon-user" aria-hidden="true"></span> Attackers</th>
+                                                            <th><span className="glyphicon glyphicon-flash" aria-hidden="true"></span> Attacked points</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {
+                                                        _.toArray(this.state.theAttackerArray).map((attacker, i) => {
+                                                            return (
+                                                                <tr key={i} onClick={this.handleChosenCommanderAttacker.bind(this, attacker.attacker.toLowerCase())} className={this.state.chosenCommanderAttacker === attacker.attacker.toLowerCase() ? 'chosen': null }>
+                                                                    <td> {attacker.attacker}</td>
+                                                                    <td>{attacker.attackedPoints}</td>
+                                                                </tr>
+
+                                                            );
+                                                        })
+                                                        }
+                                                    </tbody>
+                                                </table>
                                             </div>
                                         </div>
                                         <div className="row">
@@ -147,6 +163,17 @@ const App = React.createClass({
             chosenCategory: category,
             showPoints: true
         });
+        if (category === 'commander') {
+            firebaseRoot.child(thePlayer).child('commander/attackers').once('value', (dataSnapshot) => {
+                let data = dataSnapshot.val();
+                console.log(data);
+                this.setState({
+                    theAttackerArray: data
+                });
+            }, (err) => {
+              console.log(err);
+            });
+        }
     },
     handleCommanderPoints(points) {
         //update total points
@@ -164,23 +191,25 @@ const App = React.createClass({
           console.log(err);
         });
         // save this attack under attackers
-        firebaseRoot.child(this.state.chosenPlayer).child(this.state.chosenCategory).child('attackers').once('value', (dataSnapshot) => {
+        firebaseRoot.child(this.state.chosenPlayer).child(this.state.chosenCategory).child('attackers').child(this.state.chosenCommanderAttacker).once('value', (dataSnapshot) => {
             let data = dataSnapshot.val();
-            console.log("data", data);
-            if (data && data[this.state.chosenCommanderAttacker]) {
-                firebaseRoot.child(this.state.chosenPlayer).child(this.state.chosenCategory).child('attackers').child(this.state.chosenCommanderAttacker).set({
-                    attackedPoints: data[this.state.chosenCommanderAttacker].attackedPoints + points,
-                    attacker: this.state.chosenCommanderAttacker.charAt(0).toUpperCase() + this.state.chosenCommanderAttacker.slice(1)
-                }).then(null, window.alert);
-            } else {
-                firebaseRoot.child(this.state.chosenPlayer).child(this.state.chosenCategory).child('attackers').child(this.state.chosenCommanderAttacker).set({
-                    attackedPoints: points,
-                    attacker: this.state.chosenCommanderAttacker.charAt(0).toUpperCase() + this.state.chosenCommanderAttacker.slice(1)
-                }).then(null, window.alert);
-                }
+            // console.log("data", data);
+            firebaseRoot.child(this.state.chosenPlayer).child(this.state.chosenCategory).child('attackers').child(this.state.chosenCommanderAttacker).update({
+                attackedPoints: data.attackedPoints + points
+            }).then(null, window.alert);
         }, (err) => {
           console.log(err);
         });
+        // update theAttackerArray
+        firebaseRoot.child(this.state.chosenPlayer).child('commander/attackers').once('value', (dataSnapshot) => {
+                let data = dataSnapshot.val();
+                console.log(data);
+                this.setState({
+                    theAttackerArray: data
+                });
+            }, (err) => {
+              console.log(err);
+            });
     },
     handlePoints(points) {
         firebaseRoot.child(this.state.chosenPlayer).child(this.state.chosenCategory).once('value', (dataSnapshot) => {
@@ -197,23 +226,23 @@ const App = React.createClass({
         });
     },
     handleChosenCommanderAttacker(theAttacker) {
-        console.log(theAttacker);
+        // console.log(theAttacker);
         this.setState({
             chosenCommanderAttacker: theAttacker
         });
     },
     handleChooseWinner(winner) {
-        console.log("winner", winner);
+        // console.log("winner", winner);
         firebaseRoot.child(winner).child('winning').once('value', (dataSnapshot) => {
             let data = dataSnapshot.val();
-            console.log("data",data);
+            // console.log("data",data);
             firebaseRoot.child(winner).child('winning').set(data+1).then(null, window.alert);
         }, (err) => {
           console.log(err);
         });
         firebaseRoot.child(winner).child('totalWinning').once('value', (dataSnapshot) => {
             let data = dataSnapshot.val();
-            console.log("data",data);
+            // console.log("data",data);
             firebaseRoot.child(winner).child('totalWinning').set(data+1).then(null, window.alert);
         }, (err) => {
           console.log(err);
@@ -223,12 +252,19 @@ const App = React.createClass({
                 life: 40,
                 poison: 0,
                 commander: {
-                    totalpoints: 0,
-                    attackers: null
+                    totalpoints: 0
                 },
                 historyPoints: 0,
                 disable: false
                 }).then(null, window.alert);
+        });
+        this.state.players.map((onePlayer) => {
+            this.state.players.map(async (player) => {
+                await firebaseRoot.child(onePlayer['.key']).child('commander/attackers').child(player['.key']).set({
+                    attackedPoints:0,
+                    attacker: player.name
+                    }).then(null, window.alert);
+            })
         })
     },
     handleNewMatch() {
@@ -238,12 +274,19 @@ const App = React.createClass({
                 life: 40,
                 poison: 0,
                 commander: {
-                    totalpoints: 0,
-                    attackers: null
+                    totalpoints: 0
                 },
                 historyPoints: 0,
                 disable: false
                 }).then(null, window.alert);
+        });
+        this.state.players.map((onePlayer) => {
+            this.state.players.map(async (player) => {
+                await firebaseRoot.child(onePlayer['.key']).child('commander/attackers').child(player['.key']).set({
+                    attackedPoints:0,
+                    attacker: player.name
+                    }).then(null, window.alert);
+            })
         })
     }
 });

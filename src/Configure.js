@@ -5,6 +5,9 @@ import ReactFireMixin from 'reactfire';
 
 const Configure = React.createClass({
     mixins: [ReactFireMixin],
+    contextTypes: {
+        history: React.PropTypes.object.isRequired
+    },
     getInitialState() {
         return {
             name: ''
@@ -38,6 +41,16 @@ const Configure = React.createClass({
             null, window.alert
         );
     },
+    handleAddPlayersAsAttackers() {
+        this.state.players.map((onePlayer) => {
+            this.state.players.map(async (player) => {
+                await firebaseRoot.child(onePlayer['.key']).child('commander/attackers').child(player['.key']).set({
+                    attackedPoints:0,
+                    attacker: player.name
+                    }).then(this.context.history.push('/'), window.alert);
+            })
+        })
+    },
     render() {
         console.log("players", this.state.players);
         return (
@@ -69,6 +82,9 @@ const Configure = React.createClass({
                         }
                         </ul>
                     </div>
+                </div>
+                <div className="row">
+                    <button className="col-xs-8 col-xs-push-2 btn btn-info" type="button" onClick={this.handleAddPlayersAsAttackers}>Finish</button>
                 </div>
             </div>
         )

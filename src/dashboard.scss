@@ -24,4 +24,10 @@ table {
     .confirm {
         margin-top: 20px;
     }
+    table {
+        text-align: left;
+    }
+    tr.chosen {
+        background-color: lightblue;
+    }
 }
