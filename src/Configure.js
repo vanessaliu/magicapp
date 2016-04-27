@@ -23,8 +23,12 @@ const Configure = React.createClass({
             totalWinning: 0,
             life: 40,
             poison: 0,
-            commander: 0,
-            historyPoints: 0
+            commander: {
+                totalpoints: 0,
+                attackers: null
+            },
+            historyPoints: 0,
+            disable: false
         }).then(
             this.setState({name: ''}), window.alert
         );
@@ -39,9 +43,9 @@ const Configure = React.createClass({
         return (
             <div>
                 <div className="btn-group col-xs-12" role="group" aria-label="...">
-                    <Link activeStyle={{color:'green'}} to="configure" type="button" className="btn btn-warning col-xs-4">Configure</Link>
-                    <Link activeStyle={{color:'green'}} to="/" type="button" className="btn btn-warning col-xs-4">Dashboard</Link>
-                    <Link activeStyle={{color:'green'}} to="history" type="button" className="btn btn-warning col-xs-4">History</Link>
+                    <Link activeStyle={{backgroundColor:'green'}} to="configure" type="button" className="btn btn-warning col-xs-4">Configure</Link>
+                    <Link activeStyle={{backgroundColor:'green'}} to="/" type="button" className="btn btn-warning col-xs-4">Dashboard</Link>
+                    <Link activeStyle={{backgroundColor:'green'}} to="history" type="button" className="btn btn-warning col-xs-4">History</Link>
                 </div>
                 <div className="row">
                     <div className="col-xs-8 col-xs-push-2">

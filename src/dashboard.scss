@@ -8,4 +8,20 @@
 
 table {
     text-align: center;
+    td.chosen {
+        background-color: lightblue;
+    }
+    td.disable{
+        background-color: lightgray;
+        text-decoration: line-through;
+    }
+}
+
+.modal-commander {
+    .players {
+        margin-bottom: 20px;
+    }
+    .confirm {
+        margin-top: 20px;
+    }
 }
