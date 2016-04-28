@@ -6,6 +6,9 @@
   "scripts": {
     "start": "webpack-dev-server"
   },
+  "engines": {
+    "node": "5.7.1"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/vanessaliu/magicapp.git"
