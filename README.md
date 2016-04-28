@@ -1,1 +1,2 @@
 # magicapp
+# lots of effort
