@@ -2,6 +2,7 @@ import React from 'react';
 import {Link} from 'react-router';
 import { firebaseRoot } from './utils/firebase-utils';
 import ReactFireMixin from 'reactfire';
+import './configure.scss';
 
 const Configure = React.createClass({
     mixins: [ReactFireMixin],
@@ -54,7 +55,7 @@ const Configure = React.createClass({
     render() {
         console.log("players", this.state.players);
         return (
-            <div>
+            <div id="configure">
                 <div className="btn-group col-xs-12" role="group" aria-label="...">
                     <Link activeStyle={{backgroundColor:'green'}} to="configure" type="button" className="btn btn-warning col-xs-4">Configure</Link>
                     <Link activeStyle={{backgroundColor:'green'}} to="/" type="button" className="btn btn-warning col-xs-4">Dashboard</Link>
@@ -76,7 +77,7 @@ const Configure = React.createClass({
                         {
                             this.state.players.map((player,i) => {
                                 return (
-                                    <li className="list-group-item" key={i}>{player.name} <button type="button" className="btn btn-default pull-right" onClick={this.handleDelete.bind(this, player['.key'])}>Delete</button></li>
+                                    <li className="list-group-item" key={i}>{player.name} <span className="glyphicon glyphicon-trash pull-right" aria-hidden="true" onClick={this.handleDelete.bind(this, player['.key'])}></span></li>
                                 );
                             })
                         }

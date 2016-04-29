@@ -25,7 +25,7 @@ const App = React.createClass({
         console.log(this.state.chosenPlayer, this.state.chosenCategory);
         // console.log(this.state.players);
         return (
-            <div>
+            <div id="dashboard">
                 <div className="row">
                     <div className="col-xs-3 new" role="group" aria-label="...">
                             <button activeStyle={{backgroundColor:'green'}} type="button" className="btn btn-info col-xs-6" data-toggle="modal" data-target=".modal-new-game">New Game</button>
@@ -58,9 +58,9 @@ const App = React.createClass({
                                         <td className={ player.disable ? 'disable': null }>{player.name}</td>
                                         <td>{player.winning}</td>
                                         <td>{player.totalWinning}</td>
-                                        <td onClick={this.handleChosen.bind(this, player['.key'], 'life')} className={this.state.chosenPlayer === player['.key'] && this.state.chosenCategory === "life" ? 'chosen': null }>{player.life}</td>
-                                        <td onClick={this.handleChosen.bind(this, player['.key'], 'poison')} className={this.state.chosenPlayer === player['.key'] && this.state.chosenCategory === "poison" ? 'chosen': null }>{player.poison}</td>
-                                        <td onClick={this.handleChosen.bind(this, player['.key'], 'commander')} data-toggle="modal" data-target=".modal-commander">{player.commander.totalpoints}</td>
+                                        <td onClick={this.handleChosen.bind(this, player['.key'], 'life')} className={this.state.chosenPlayer === player['.key'] && this.state.chosenCategory === "life" ? 'chosen': "pointer" }>{player.life}</td>
+                                        <td onClick={this.handleChosen.bind(this, player['.key'], 'poison')} className={this.state.chosenPlayer === player['.key'] && this.state.chosenCategory === "poison" ? 'chosen': "pointer" }>{player.poison}</td>
+                                        <td onClick={this.handleChosen.bind(this, player['.key'], 'commander')} data-toggle="modal" data-target=".modal-commander" className="pointer">{player.commander.totalpoints}</td>
                                     </tr>
                                 );
                             })
@@ -92,7 +92,7 @@ const App = React.createClass({
                                       {
                                         this.state.players.map((player, i) => {
                                             return (
-                                                <li key={i} className="list-group-item" data-dismiss="modal" aria-label="Close" onClick={this.handleChooseWinner.bind(this, player['.key'])}>{player.name}</li>
+                                                <li key={i} className="list-group-item pointer" data-dismiss="modal" aria-label="Close" onClick={this.handleChooseWinner.bind(this, player['.key'])}>{player.name}</li>
                                             );
                                         })
                                     }
@@ -123,7 +123,7 @@ const App = React.createClass({
                                                         {
                                                         _.toArray(this.state.theAttackerArray).map((attacker, i) => {
                                                             return (
-                                                                <tr key={i} onClick={this.handleChosenCommanderAttacker.bind(this, attacker.attacker.toLowerCase())} className={this.state.chosenCommanderAttacker === attacker.attacker.toLowerCase() ? 'chosen': null }>
+                                                                <tr key={i} onClick={this.handleChosenCommanderAttacker.bind(this, attacker.attacker.toLowerCase())} className={this.state.chosenCommanderAttacker === attacker.attacker.toLowerCase() ? 'chosen': "pointer" }>
                                                                     <td> {attacker.attacker}</td>
                                                                     <td>{attacker.attackedPoints}</td>
                                                                 </tr>
@@ -147,7 +147,7 @@ const App = React.createClass({
                                         </div>
                                         <div className="row">
                                             <div className="col-xs-12 confirm">
-                                                <button type="button" data-dismiss="modal" aria-label="Close" className="btn btn-lg btn-warning col-xs-4 col-xs-push-4">OK and Close</button>
+                                                <button type="button" data-dismiss="modal" aria-label="Close" className="btn btn-lg btn-warning col-xs-4 col-xs-push-4">OK,close!</button>
                                             </div>
                                         </div>
                                 </div>

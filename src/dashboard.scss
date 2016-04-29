@@ -1,33 +1,38 @@
-.new {
-    button {
-        font-size: 10px;
-        padding: 10px 0;
-    }
-
-}
-
-table {
-    text-align: center;
-    td.chosen {
-        background-color: lightblue;
-    }
-    td.disable{
-        background-color: lightgray;
-        text-decoration: line-through;
-    }
-}
-
-.modal-commander {
-    .players {
-        margin-bottom: 20px;
-    }
-    .confirm {
-        margin-top: 20px;
+#dashboard {
+   .new {
+        button {
+            font-size: 10px;
+            padding: 10px 0;
+        }
     }
     table {
-        text-align: left;
+        text-align: center;
+        td.chosen {
+            background-color: lightblue;
+        }
+        td.disable{
+            background-color: lightgray;
+            text-decoration: line-through;
+        }
     }
-    tr.chosen {
-        background-color: lightblue;
+    .modal-commander {
+        .players {
+            margin-bottom: 10px;
+            tr {
+                cursor: pointer;
+            }
+        }
+        .confirm {
+            margin-top: 10px;
+        }
+        table {
+            text-align: left;
+        }
+        tr.chosen {
+            background-color: lightblue;
+        }
     }
+}
+.pointer {
+    cursor: pointer;
 }
