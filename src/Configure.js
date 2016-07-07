@@ -6,9 +6,6 @@ import './configure.scss';
 
 const Configure = React.createClass({
     mixins: [ReactFireMixin],
-    contextTypes: {
-        history: React.PropTypes.object.isRequired
-    },
     getInitialState() {
         return {
             name: ''
@@ -36,24 +33,30 @@ const Configure = React.createClass({
         }).then(
             this.setState({name: ''}), window.alert
         );
-    },
-    handleDelete(thePlayer) {
-        firebaseRoot.child(thePlayer).remove().then(
-            null, window.alert
-        );
-    },
-    handleAddPlayersAsAttackers() {
         this.state.players.map((onePlayer) => {
             this.state.players.map(async (player) => {
                 await firebaseRoot.child(onePlayer['.key']).child('commander/attackers').child(player['.key']).set({
                     attackedPoints:0,
                     attacker: player.name
-                    }).then(this.context.history.push('/'), window.alert);
+                    }).then(null, window.alert);
+            })
+        })
+    },
+    handleDelete(thePlayer) {
+        firebaseRoot.child(thePlayer).remove().then(
+            null, window.alert
+        );
+        this.state.players.map((onePlayer) => {
+            firebaseRoot.child(onePlayer['.key']).child('commander/attackers').remove();
+            this.state.players.map(async (player) => {
+                await firebaseRoot.child(onePlayer['.key']).child('commander/attackers').child(player['.key']).set({
+                    attackedPoints:0,
+                    attacker: player.name
+                    }).then(null, window.alert);
             })
         })
     },
     render() {
-        console.log("players", this.state.players);
         return (
             <div id="configure">
                 <div className="btn-group col-xs-12" role="group" aria-label="...">
@@ -77,15 +80,12 @@ const Configure = React.createClass({
                         {
                             this.state.players.map((player,i) => {
                                 return (
-                                    <li className="list-group-item" key={i}>{player.name} <span className="glyphicon glyphicon-trash pull-right" aria-hidden="true" onClick={this.handleDelete.bind(this, player['.key'])}></span></li>
+                                    <li className="list-group-item" key={i}>{player.name} <span className="glyphicon glyphicon-trash pull-right pointer" aria-hidden="true" onClick={this.handleDelete.bind(this, player['.key'])}></span></li>
                                 );
                             })
                         }
                         </ul>
                     </div>
-                </div>
-                <div className="row">
-                    <button className="col-xs-8 col-xs-push-2 btn btn-info" type="button" onClick={this.handleAddPlayersAsAttackers}>Finish</button>
                 </div>
             </div>
         )

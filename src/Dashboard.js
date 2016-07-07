@@ -28,11 +28,10 @@ const App = React.createClass({
             <div id="dashboard">
                 <div className="row">
                     <div className="col-xs-3 new" role="group" aria-label="...">
-                            <button activeStyle={{backgroundColor:'green'}} type="button" className="btn btn-info col-xs-6" data-toggle="modal" data-target=".modal-new-game">New Game</button>
-                            <button activeStyle={{backgroundColor:'green'}} type="button" className="btn btn-info col-xs-6" onClick={this.handleNewMatch}>New Match</button>
-                        </div>
+                        <button type="button" className="btn btn-info col-xs-6" data-toggle="modal" data-target=".modal-new-game">New Game</button>
+                        <button type="button" className="btn btn-info col-xs-6" onClick={this.handleNewMatch}>New Match</button>
+                    </div>
                     <div className="btn-group col-xs-9" role="group" aria-label="...">
-
                         <Link activeStyle={{backgroundColor:'green'}} to="configure" type="button" className="btn btn-warning col-xs-4">Configure</Link>
                         <Link activeStyle={{backgroundColor:'green'}} to="/" type="button" className="btn btn-warning col-xs-4">Dashboard</Link>
                         <Link activeStyle={{backgroundColor:'green'}} to="history" type="button" className="btn btn-warning col-xs-4">History</Link>
@@ -147,7 +146,7 @@ const App = React.createClass({
                                         </div>
                                         <div className="row">
                                             <div className="col-xs-12 confirm">
-                                                <button type="button" data-dismiss="modal" aria-label="Close" className="btn btn-lg btn-warning col-xs-4 col-xs-push-4">OK,close!</button>
+                                                <button type="button" data-dismiss="modal" aria-label="Close" className="btn btn-lg btn-warning col-xs-4 col-xs-push-4" onClick={this.handleCloseCommanderModal}>OK,close!</button>
                                             </div>
                                         </div>
                                 </div>
@@ -217,6 +216,9 @@ const App = React.createClass({
             firebaseRoot.child(this.state.chosenPlayer).child(this.state.chosenCategory).set(data+points).then(null, window.alert);
             if (this.state.chosenCategory === 'poison' && (data+points) >= 15) {
                 firebaseRoot.child(this.state.chosenPlayer).child('disable').set(true).then(null, window.alert);
+            }
+            else if (this.state.chosenCategory === 'poison' && (0 < (data+points) < 15)) {
+                firebaseRoot.child(this.state.chosenPlayer).child('disable').set(false).then(null, window.alert);
             }
             if (this.state.chosenCategory === 'poison' && (data+points) < 0) {
                 firebaseRoot.child(this.state.chosenPlayer).child(this.state.chosenCategory).set(0).then(null, window.alert);
@@ -288,6 +290,11 @@ const App = React.createClass({
                     }).then(null, window.alert);
             })
         })
+    },
+    handleCloseCommanderModal() {
+        this.setState({
+            chosenCommanderAttacker: ''
+        });
     }
 });
 
