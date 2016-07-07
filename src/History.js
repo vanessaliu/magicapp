@@ -33,14 +33,13 @@ const Configure = React.createClass({
                       <div className="panel-body">
                         {
                             this.state.players.map((player, i) => {
-                                console.log(_.toArray(player.commander.attackers));
                                 return (
-                                    <div className="list-group">
+                                    <div className="list-group" key={i}>
                                         <h5 className="list-group-item-heading">Attack receiver: {player.name}</h5>
                                         {
-                                            _.toArray(player.commander.attackers).map((attacker,i) => {
+                                            _.toArray(player.commander.attackers).map((attacker,j) => {
                                                 return (
-                                                    <li className="list-group-item">Attacked by: {attacker.attacker} ({attacker.attackedPoints} points)</li>
+                                                    <li className="list-group-item" key={j}>Attacked by: {attacker.attacker} ({attacker.attackedPoints} points)</li>
                                                 )
                                             })
                                         }
@@ -48,14 +47,6 @@ const Configure = React.createClass({
                                 )
                             })
                         }
-                      </div>
-                    </div>
-                    <div className="panel panel-default col-xs-10 col-xs-push-1">
-                      <div className="panel-heading">
-                        <h3 className="panel-title">Other</h3>
-                      </div>
-                      <div className="panel-body">
-                        Panel content
                       </div>
                     </div>
                 </div>
